@@ -3,6 +3,14 @@ import random
 import sys
 import datetime
 
+numNeeded = int(input('How many recipes do you want generated? '))
+numLeftover = int(input('How many recipes are left over from last week? '))
+numNeeded -= numLeftover
+leftOver = []
+for i in range(0, numLeftover):
+	tempPick = input('Leftover recipe %d: ' %(i+1))
+	leftOver.append(tempPick)
+
 #get current recipes
 allRecipes = os.listdir('recipes')
 
@@ -30,22 +38,22 @@ else:
 
 logData = logFile.readlines()
 parsedData = [line.split() for line in logData]
-
-check = 'n'
-randList = []
-while check == 'n':
-	validChoices = [choice[0] for choice in parsedData if int(choice[1]) < 1]
-	randRecipe = 0
-	for i in range(1,6):
-		randRecipe = random.randint(0,len(validChoices)-1)
-		randList.append(validChoices[randRecipe])
-		del validChoices[randRecipe]
-	print('These recipes were selected: ')
-	for i in randList:
-		print(i)
-	check = input('Is this list ok? ')
-	if check == 'n':
-		randList = []
+randList = [] #leave this here or there is an error when trying to print later
+if numNeeded > 0:
+	check = 'n'
+	while check == 'n':
+		validChoices = [choice[0] for choice in parsedData if int(choice[1]) < 1]
+		randRecipe = 0
+		for i in range(0, numNeeded):
+			randRecipe = random.randint(0,len(validChoices)-1)
+			randList.append(validChoices[randRecipe])
+			del validChoices[randRecipe]
+		print('These recipes were selected: ')
+		for i in randList:
+			print(i)
+		check = input('Is this list ok? ')
+		if check == 'n':
+			randList = []
 
 ingredientList = []
 ingredientQuantity = []
@@ -70,14 +78,18 @@ for i in randList: #i is the current recipe
 
 newPrintList = open("printMe", "w")
 #print the 5 things we chose to eat
-newPrintList.write("This is the 5 dinner choices: \n")
+newPrintList.write("This is the %d dinner choices: \n" %(numNeeded + numLeftover))
+for i in range(0,len(leftOver)):
+	newPrintList.write("%s\n" %leftOver[i])
+
 for i in range(0,len(randList)):
 	newPrintList.write("%s\n" %randList[i])
 
-newPrintList.write("***********************\nThese are the ingredients:\n")
-for i in range(0,len(ingredientList)):
-	newPrintList.write("______%d" %ingredientQuantity[i])
-	newPrintList.write(" %s" %ingredientList[i])
+if len(ingredientList) > 0:
+	newPrintList.write("***********************\nThese are the ingredients:\n")
+	for i in range(0,len(ingredientList)):
+		newPrintList.write("______%d" %ingredientQuantity[i])
+		newPrintList.write(" %s" %ingredientList[i])
 
 
 	
