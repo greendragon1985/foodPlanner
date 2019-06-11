@@ -7,6 +7,7 @@ numNeeded = int(input('How many recipes do you want generated? '))
 numLeftover = int(input('How many recipes are left over from last week? '))
 numNeeded -= numLeftover
 leftOver = []
+
 for i in range(0, numLeftover):
 	tempPick = input('Leftover recipe %d: ' %(i+1))
 	leftOver.append(tempPick)
@@ -106,4 +107,17 @@ weeklyList = ["mayo","milk","cheese","bread","eggs","ketchup","lettuce","carrots
 "jelly", "chili", "ramen", "chips", "lunchmeat", "mustard", "ice cream"]
 for i in weeklyList:
 	newPrintList.write("______%s\n" %i)
-	
+
+
+check = input('Is there anything extra needed this week? (y for yes)' )
+if check == 'y':
+	while check == 'y':
+		eventName = input('What is the event name? ')
+		newPrintList.write("****************\nSpecial stuff for %s:\n" %eventName)
+		tempIngredient = 'nope'
+		while tempIngredient != 'done':
+			tempIngredient = input('Enter ingredient (or done if complete): ')
+			if tempIngredient != 'done':
+				newPrintList.write("%s\n" %tempIngredient)
+		check = input('Is there another event to add ingredients for? (y for yes): ')
+
