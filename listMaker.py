@@ -34,9 +34,9 @@ parsedData = [line.split() for line in logData]
 check = 'n'
 randList = []
 while check == 'n':
-	validChoices = [choice[0] for choice in parsedData if int(choice[1]) < 3]
+	validChoices = [choice[0] for choice in parsedData if int(choice[1]) < 1]
 	randRecipe = 0
-	for i in range(1,4):
+	for i in range(1,6):
 		randRecipe = random.randint(0,len(validChoices)-1)
 		randList.append(validChoices[randRecipe])
 		del validChoices[randRecipe]
@@ -65,12 +65,21 @@ for i in randList: #i is the current recipe
 
 	for j in range(0,len(parsedData)):
 		if i == parsedData[j][0]:
-			parsedData[j][1] = 4
+			parsedData[j][1] = 2
+
 
 newPrintList = open("printMe", "w")
+#print the 5 things we chose to eat
+newPrintList.write("This is the 5 dinner choices: \n")
+for i in range(0,len(randList)):
+	newPrintList.write("%s\n" %randList[i])
+
+newPrintList.write("***********************\nThese are the ingredients:\n")
 for i in range(0,len(ingredientList)):
-	newPrintList.write("%d" %ingredientQuantity[i])
+	newPrintList.write("______%d" %ingredientQuantity[i])
 	newPrintList.write(" %s" %ingredientList[i])
+
+
 	
 newLog = open("recipes/logFile", "w")
 for i in range(0,len(parsedData)):
@@ -79,5 +88,10 @@ for i in range(0,len(parsedData)):
 	newLog.write("%s %s\n" %(parsedData[i][0], parsedData[i][1]))
 
 
-
+newPrintList.write("**********************\nThese are the regular weekly items we need:\n")
+weeklyList = ["mayo","milk","cheese","bread","eggs","ketchup","lettuce","carrots","cereal", 
+"butter", "creamy peanut butter", "cruncy PB", "tuna", "chris ranch", "taz ranch", 
+"jelly", "chili", "ramen", "chips", "lunchmeat", "mustard", "ice cream"]
+for i in weeklyList:
+	newPrintList.write("______%s\n" %i)
 	
